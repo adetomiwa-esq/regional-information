@@ -8,14 +8,25 @@ import {
   LogOut,
   Edit,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/");
   };
+
+  const [user,setUser] = useState("")
+
+  useEffect(() => {
+    setUser(localStorage.getItem("user"))
+
+    if(!localStorage.getItem("user")){
+      navigate("/")
+    }
+  }, [])
 
   return (
     <div className="min-h-screen flex bg-slate-100">
@@ -23,7 +34,7 @@ const Dashboard = () => {
       <aside className="w-72 bg-blue-950 text-white flex flex-col">
         <div className="p-6 border-b border-blue-900">
           <h1 className="text-2xl font-bold">
-            RIS Admin
+            RIS {user.startsWith("admin") ? "Admin" : "User"}
           </h1>
 
           <p className="text-sm text-slate-300 mt-1">
@@ -45,7 +56,7 @@ const Dashboard = () => {
 
             <li>
               <Link
-                to="/population"
+                to="/geography-population"
                 className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-900 transition"
               >
                 <Users size={18} />
@@ -55,7 +66,7 @@ const Dashboard = () => {
 
             <li>
               <Link
-                to="/schools"
+                to="/institutions"
                 className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-900 transition"
               >
                 <School size={18} />
@@ -65,7 +76,7 @@ const Dashboard = () => {
 
             <li>
               <Link
-                to="/hospitals"
+                to="/health-institutions"
                 className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-900 transition"
               >
                 <Hospital size={18} />
@@ -73,7 +84,7 @@ const Dashboard = () => {
               </Link>
             </li>
 
-            <li>
+            {/* <li>
               <Link
                 to="/reports"
                 className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-900 transition"
@@ -81,9 +92,9 @@ const Dashboard = () => {
                 <FileText size={18} />
                 Reports
               </Link>
-            </li>
+            </li> */}
 
-            <li>
+            {user.startsWith("admin") ? <li>
               <Link
                 to="/edit-region"
                 className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-900 transition"
@@ -91,7 +102,7 @@ const Dashboard = () => {
                 <Edit size={18} />
                 Edit Region Data
               </Link>
-            </li>
+            </li> : ""}
           </ul>
         </nav>
 
@@ -114,7 +125,7 @@ const Dashboard = () => {
           </h2>
 
           <p className="text-gray-500">
-            Welcome back, Administrator
+            Welcome back, {user.startsWith("admin") ? "Administrator" : "User"}
           </p>
         </div>
 
@@ -162,7 +173,7 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Data */}
-        <div className="bg-white rounded-xl shadow mt-8">
+        {/* <div className="bg-white rounded-xl shadow mt-8">
           <div className="p-6 border-b">
             <h3 className="font-semibold text-lg">
               Recent Regions
@@ -195,7 +206,7 @@ const Dashboard = () => {
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> */}
       </main>
     </div>
   );

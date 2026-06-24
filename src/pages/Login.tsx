@@ -13,8 +13,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   // Mock credentials
-  const validEmail = "admin@example.com";
-  const validPassword = "password123";
+  const validEmail = "admin@gmail.com";
+  const validEmail2= "user@gmail.com"
+  const validPassword = "12345";
 
   const handleLogin = () => {
     setEmailError("");
@@ -29,6 +30,9 @@ const Login = () => {
         setEmailError("Incorrect email address");
         hasError = true;
       }
+      if(email == validEmail2){
+        hasError = false
+      }
 
       if (password !== validPassword) {
         setPasswordError("Incorrect password");
@@ -38,6 +42,7 @@ const Login = () => {
       setLoading(false);
 
       if (!hasError) {
+        localStorage.setItem("user", email)
         navigate("/dashboard");
       }
     }, 2000);
