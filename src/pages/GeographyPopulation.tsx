@@ -30,7 +30,7 @@ const GeographyPopulation = () => {
 
   useEffect(() => {
 
-    if(!localStorage.getItem("user")){
+    if(!localStorage.getItem("role")){
       navigate("/")
     }
   }, [])

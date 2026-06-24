@@ -27,6 +27,14 @@ const Institutions = () => {
     fetchRegion();
   }, []);
 
+
+  useEffect(() => {
+
+    if(!localStorage.getItem("role")){
+      navigate("/")
+    }
+  }, [])
+
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">

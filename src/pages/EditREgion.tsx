@@ -9,8 +9,20 @@ import EditableFacilityList from "../components/EditableFacilityList";
 import EditableSchoolList from "../components/EditableSchoolList";
 import GeographySection from "../components/GeographySection";
 import PoliticalStructureSection from "../components/PoliticalStructureSection";
+import { useNavigate } from "react-router-dom";
 
 const EditRegion = () => {
+
+    const navigate = useNavigate()
+
+    const isAdmin =
+  localStorage.getItem("role") === "admin";
+  useEffect(() => {
+
+    if(!isAdmin){
+      navigate("/")
+    }
+  }, [])
   const [region, setRegion] =
     useState<any>(null);
 
