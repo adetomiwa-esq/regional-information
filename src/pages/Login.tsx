@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,43 +10,62 @@ const Login = () => {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [generalError, setGeneralError] = useState("");
 
   const [loading, setLoading] = useState(false);
 
-  // Mock credentials
-  const validEmail = "admin@gmail.com";
-  const validEmail2= "user@gmail.com"
-  const validPassword = "12345";
-
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setEmailError("");
     setPasswordError("");
+    setGeneralError("");
 
-    setLoading(true);
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      return;
+    }
 
-    setTimeout(() => {
-      let hasError = false;
+    if (!password.trim()) {
+      setPasswordError("Password is required");
+      return;
+    }
 
-      if (email !== validEmail) {
-        setEmailError("Incorrect email address");
-        hasError = true;
+    try {
+      setLoading(true);
+
+      const response = await axios.post(
+        "https://regional-info-api.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      const data = response.data;
+
+      // Store auth data if returned
+      if (data.token) {
+        localStorage.setItem("token", data.token);
       }
-      if(email == validEmail2){
-        hasError = false
+
+      localStorage.setItem("user", email);
+
+      // Admin check
+      if (email === "admin@gmail.com") {
+        localStorage.setItem("role", "admin");
+      } else {
+        localStorage.setItem("role", "user");
       }
 
-      if (password !== validPassword) {
-        setPasswordError("Incorrect password");
-        hasError = true;
-      }
+      navigate("/dashboard");
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ||
+        "Invalid email or password";
 
+      setGeneralError(message);
+    } finally {
       setLoading(false);
-
-      if (!hasError) {
-        localStorage.setItem("user", email)
-        navigate("/dashboard");
-      }
-    }, 2000);
+    }
   };
 
   return (
@@ -61,6 +81,12 @@ const Login = () => {
           </p>
         </div>
 
+        {generalError && (
+          <div className="mb-4 bg-red-100 border border-red-300 text-red-600 p-3 rounded-lg">
+            {generalError}
+          </div>
+        )}
+
         <div className="space-y-5">
           {/* Email */}
           <div>
@@ -72,13 +98,14 @@ const Login = () => {
               type="email"
               placeholder="Enter email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={`w-full border rounded-lg px-4 py-3 outline-none transition
-                ${
-                  emailError
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-blue-900"
-                }`}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
+              className={`w-full border rounded-lg px-4 py-3 outline-none transition ${
+                emailError
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-blue-900"
+              }`}
             />
 
             {emailError && (
@@ -98,13 +125,14 @@ const Login = () => {
               type="password"
               placeholder="Enter password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={`w-full border rounded-lg px-4 py-3 outline-none transition
-                ${
-                  passwordError
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-blue-900"
-                }`}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              className={`w-full border rounded-lg px-4 py-3 outline-none transition ${
+                passwordError
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-blue-900"
+              }`}
             />
 
             {passwordError && (
@@ -114,7 +142,7 @@ const Login = () => {
             )}
           </div>
 
-          {/* Button */}
+          {/* Login Button */}
           <button
             onClick={handleLogin}
             disabled={loading}
@@ -129,6 +157,19 @@ const Login = () => {
               "Login"
             )}
           </button>
+
+          {/* Signup Link */}
+          <div className="text-center pt-2">
+            <p className="text-gray-600">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                className="text-blue-950 font-semibold hover:underline"
+              >
+                Sign Up
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

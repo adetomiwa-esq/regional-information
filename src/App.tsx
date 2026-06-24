@@ -9,6 +9,7 @@ import EditRegion from './pages/EditREgion'
 import Institutions from './pages/Institutions'
 import HealthInstitutions from './pages/HealthInstitutions'
 import GeographyPopulation from './pages/GeographyPopulation'
+import Signup from './pages/Signup'
 
 function App() {
 
@@ -48,6 +49,11 @@ function App() {
           path="/regions/:id"
           element={<RegionDetails />}
         />
+
+        <Route
+  path="/signup"
+  element={<Signup />}
+/>
       </Routes>
     </BrowserRouter>
   )
