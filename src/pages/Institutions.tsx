@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { School2 } from "lucide-react";
 
 const Institutions = () => {
   const navigate = useNavigate();
@@ -72,26 +73,26 @@ const Institutions = () => {
       address: string;
     }[];
   }) => (
-    <div className="bg-white rounded-xl shadow overflow-hidden">
-      <div className="flex items-center justify-between border-b p-5">
-        <h2 className="text-xl font-semibold text-blue-950">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200">
+      <div className="flex items-center justify-between px-6 py-5 bg-slate-50 border-b">
+        <h2 className="text-2xl font-bold text-blue-950">
           {title}
         </h2>
 
-        <span className="bg-blue-100 text-blue-950 px-3 py-1 rounded-full text-sm font-medium">
+        <span className="bg-blue-950 text-white px-4 py-2 rounded-full text-sm font-semibold">
           {schools.length}
         </span>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-slate-100">
+          <thead className="bg-blue-950 text-white sticky top-0">
             <tr>
-              <th className="text-left p-4">S/N</th>
-              <th className="text-left p-4">
+              <th className="text-left p-5 font-semibold">S/N</th>
+              <th className="text-left p-5 font-semibold">
                 Institution Name
               </th>
-              <th className="text-left p-4">
+              <th className="text-left p-5 font-semibold">
                 Address
               </th>
             </tr>
@@ -110,15 +111,32 @@ const Institutions = () => {
       },
     })
   }
-  className="border-b hover:bg-slate-100 cursor-pointer transition"
+  className="border-b odd:bg-white even:bg-slate-50 hover:bg-blue-50 cursor-pointer transition-all duration-200"
 >
   <td className="p-4">{index + 1}</td>
 
-  <td className="p-4 font-medium text-blue-950">
-    {school.name}
-  </td>
+  <td className="p-5">
+  <div className="flex items-center gap-3">
+    <div className="bg-blue-100 p-2 rounded-lg">
+      <School2
+        size={18}
+        className="text-blue-900"
+      />
+    </div>
 
-  <td className="p-4 text-gray-600">
+    <div>
+      <p className="font-semibold text-blue-950">
+        {school.name}
+      </p>
+
+      <p className="text-sm text-gray-500">
+        Click to view details
+      </p>
+    </div>
+  </div>
+</td>
+
+  <td className="p-5 text-gray-500">
     {school.address}
   </td>
 </tr>
@@ -153,44 +171,97 @@ const Institutions = () => {
 
       {/* Page Header */}
 
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-blue-950">
-          Educational Institutions
-        </h1>
+      <div className="bg-gradient-to-r from-blue-950 to-blue-800 rounded-2xl text-white p-8 mb-8 shadow-lg">
+  <h1 className="text-4xl font-bold">
+    Educational Institutions
+  </h1>
 
-        <p className="text-gray-500 mt-2">
-          View educational infrastructure
-          within the selected region.
-        </p>
-      </div>
+  <p className="mt-3 text-blue-100 max-w-2xl">
+    Explore schools and higher institutions within the selected
+    region. Click any institution to view additional information.
+  </p>
+</div>
+
+
+<div className="grid md:grid-cols-5 gap-5 mb-10">
+  <div className="bg-white rounded-xl shadow p-5">
+    <p className="text-gray-500 text-sm">
+      Public Primary
+    </p>
+
+    <h2 className="text-3xl font-bold text-blue-950 mt-2">
+      {publicPrimary.schools.length}
+    </h2>
+  </div>
+
+  <div className="bg-white rounded-xl shadow p-5">
+    <p className="text-gray-500 text-sm">
+      Private Primary
+    </p>
+
+    <h2 className="text-3xl font-bold text-green-700 mt-2">
+      {privatePrimary.schools.length}
+    </h2>
+  </div>
+
+  <div className="bg-white rounded-xl shadow p-5">
+    <p className="text-gray-500 text-sm">
+      Secondary
+    </p>
+
+    <h2 className="text-3xl font-bold text-orange-600 mt-2">
+      {publicSecondary.schools.length}
+    </h2>
+  </div>
+
+  <div className="bg-white rounded-xl shadow p-5">
+    <p className="text-gray-500 text-sm">
+      Universities
+    </p>
+
+    <h2 className="text-3xl font-bold text-purple-700 mt-2">
+      {HigherInstitutions.schools.length}
+    </h2>
+  </div>
+
+  <div className="bg-white rounded-xl shadow p-5">
+    <p className="text-gray-500 text-sm">
+      Colleges of Health
+    </p>
+
+    <h2 className="text-3xl font-bold text-pink-700 mt-2">
+      {collegesOfHealth.schools.length}
+    </h2>
+  </div>
+</div>
 
       {/* Tables */}
 
       <div className="space-y-8">
-        <TableSection
+        <div className="transition duration-300 hover:-translate-y-1 hover:shadow-2xl"><TableSection
           title="Public Primary Schools"
           schools={publicPrimary.schools}
-        />
+        /></div>
 
-        <TableSection
+        <div className="transition duration-300 hover:-translate-y-1 hover:shadow-2xl"><TableSection
           title="Private Primary Schools"
           schools={privatePrimary.schools}
-        />
+        /></div>
 
-        <TableSection
+        <div className="transition duration-300 hover:-translate-y-1 hover:shadow-2xl"><TableSection
           title="Public Secondary Schools"
           schools={publicSecondary.schools}
-        />
+        /></div>
 
-        <TableSection
+        <div className="transition duration-300 hover:-translate-y-1 hover:shadow-2xl"><TableSection
           title="Higher Institutions"
           schools={HigherInstitutions.schools}
-        />
+        /></div>
 
-        <TableSection
+        <div className="transition duration-300 hover:-translate-y-1 hover:shadow-2xl"><TableSection
           title="Colleges of Health"
           schools={collegesOfHealth.schools}
-        />
+        /></div>
       </div>
     </div>
   );
