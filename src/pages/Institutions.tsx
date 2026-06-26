@@ -101,21 +101,27 @@ const Institutions = () => {
             {schools.length > 0 ? (
               schools.map((school, index) => (
                 <tr
-                  key={index}
-                  className="border-b hover:bg-slate-50"
-                >
-                  <td className="p-4">
-                    {index + 1}
-                  </td>
+  key={index}
+  onClick={() =>
+    navigate(`/institution/${encodeURIComponent(school.name)}`, {
+      state: {
+        institution: school,
+        category: title,
+      },
+    })
+  }
+  className="border-b hover:bg-slate-100 cursor-pointer transition"
+>
+  <td className="p-4">{index + 1}</td>
 
-                  <td className="p-4 font-medium">
-                    {school.name}
-                  </td>
+  <td className="p-4 font-medium text-blue-950">
+    {school.name}
+  </td>
 
-                  <td className="p-4 text-gray-600">
-                    {school.address}
-                  </td>
-                </tr>
+  <td className="p-4 text-gray-600">
+    {school.address}
+  </td>
+</tr>
               ))
             ) : (
               <tr>

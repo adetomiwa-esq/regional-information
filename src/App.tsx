@@ -10,6 +10,8 @@ import Institutions from './pages/Institutions'
 import HealthInstitutions from './pages/HealthInstitutions'
 import GeographyPopulation from './pages/GeographyPopulation'
 import Signup from './pages/Signup'
+import InstitutionDetails from './pages/InstitutionDetails'
+import HealthInstitutionDetails from './pages/HealthInstitutionDetails'
 
 function App() {
 
@@ -53,6 +55,16 @@ function App() {
         <Route
   path="/signup"
   element={<Signup />}
+/>
+
+<Route
+    path="/institution/:name"
+    element={<InstitutionDetails />}
+/>
+
+<Route
+  path="/health-institution/:name"
+  element={<HealthInstitutionDetails />}
 />
       </Routes>
     </BrowserRouter>
